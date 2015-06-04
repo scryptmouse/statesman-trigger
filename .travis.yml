@@ -1,0 +1,9 @@
+language: ruby
+before_install: gem install bundler -v '~> 1.9'
+cache: bundler
+rvm:
+  - 2.2.1
+before_script:
+  - psql -c 'create database statesman_trigger_test;' -U postgres
+addons:
+  postgresql: "9.3"
