@@ -39,6 +39,18 @@ describe Statesman::Trigger, params: true do
     end
   end
 
+  context 'when creating with two classes' do
+    it 'works as expected' do
+      expect do
+        connection.create_statesman_trigger Article, ArticleTransition
+      end.to_not raise_error
+
+      expect do
+        connection.drop_statesman_trigger Article, ArticleTransition
+      end.to_not raise_error
+    end
+  end
+
   context 'when providing an invalid sync_column' do
     it 'throws an error' do
       expect do

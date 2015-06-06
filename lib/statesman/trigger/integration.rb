@@ -2,11 +2,12 @@ module Statesman
   module Trigger
     module Integration
       extend ActiveSupport::Concern
+      include Statesman::Trigger::SharedMethods
 
-      def create_statesman_trigger(options = {})
+      def create_statesman_trigger(*args)
         statesman_trigger_requires_pg!
 
-        params = Statesman::Trigger::Parameters.new options
+        params = Statesman::Trigger::Parameters.new build_statesman_trigger_options(args)
 
         validation_query = params.build_validation_query
 
@@ -17,10 +18,10 @@ module Statesman
         end
       end
 
-      def drop_statesman_trigger(options = {})
+      def drop_statesman_trigger(*args)
         statesman_trigger_requires_pg!
 
-        params = Statesman::Trigger::Parameters.new options
+        params = Statesman::Trigger::Parameters.new build_statesman_trigger_options(args)
 
         params.build_statements(direction: :down).map do |stmt|
           execute stmt
@@ -29,6 +30,11 @@ module Statesman
 
       def statesman_trigger_requires_pg!
         raise 'Requires postgres' unless adapter_name =~ /postg/i
+      end
+
+      # @return [Hash]
+      def build_statesman_trigger_options(args)
+        super.first
       end
     end
   end
