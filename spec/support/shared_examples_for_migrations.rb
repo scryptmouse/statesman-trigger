@@ -94,8 +94,8 @@ RSpec.shared_examples_for 'a migration' do |direction, working|
 end
 
 RSpec.shared_examples_for 'valid migrations', valid_migration: true do
-  let(:trigger_name) { tuple.params.trigger_name.gsub('"','') }
-  let(:function_name) { tuple.params.function_name.gsub('"','') }
+  let(:trigger_name) { tuple.params.trigger_name }
+  let(:function_name) { tuple.params.function_name }
 
   def function_count_query
     <<-SQL.strip

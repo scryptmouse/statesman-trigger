@@ -5,12 +5,12 @@ module Statesman
     # @api private
     class TriggerQuery < AbstractQuery
       up! <<-SQL
-        CREATE TRIGGER %<trigger_name>s AFTER INSERT ON %<transition_table>s
-          FOR EACH ROW EXECUTE PROCEDURE %<function_name>s();
+        CREATE TRIGGER %<quoted_trigger_name>s AFTER INSERT ON %<transition_table>s
+          FOR EACH ROW EXECUTE PROCEDURE %<quoted_function_name>s();
       SQL
 
       down! <<-SQL
-        DROP TRIGGER IF EXISTS %<trigger_name>s ON %<transition_table>s;
+        DROP TRIGGER IF EXISTS %<quoted_trigger_name>s ON %<transition_table>s;
       SQL
     end
   end

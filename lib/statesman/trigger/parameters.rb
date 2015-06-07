@@ -85,6 +85,19 @@ module Statesman
       # @return [String]
       def inspect
         %[Statesman::Trigger(#{for_query.inspect})]
+
+      # @!attribute [r] quoted_function_name
+      # Returns the PG-safe {#function_name}
+      # @return [String]
+      def quoted_function_name
+        quote_ident function_name
+      end
+
+      # @!attribute [r] quoted_function_name
+      # Returns the PG-safe {#trigger_name}
+      # @return [String]
+      def quoted_trigger_name
+        quote_ident trigger_name
       end
 
       # @!attribute [r] update_function
@@ -104,7 +117,12 @@ module Statesman
         attributes.slice(:state_name, :sync_column,
                          :model_table, :transition_table,
                          :function_name, :trigger_name,
-                         :foreign_key_column)
+                         :foreign_key_column).merge(
+                           quoted_function_name:  quoted_function_name,
+                           quoted_trigger_name:   quoted_trigger_name
+                         )
+      end
+
       end
 
       private
@@ -142,12 +160,12 @@ module Statesman
 
       # @return [String]
       def default_function_name
-        quote_ident "#{prefix}_fn"
+        "#{prefix}_fn"
       end
 
       # @return [String]
       def default_trigger_name
-        quote_ident "#{prefix}_trigger"
+        "#{prefix}_trigger"
       end
 
       # @!group Quoting methods
