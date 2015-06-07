@@ -49,6 +49,14 @@ describe Statesman::Trigger, params: true do
         connection.drop_statesman_trigger Article, ArticleTransition
       end.to_not raise_error
     end
+
+    context 'and an invalid sync column' do
+      it 'throws an error' do
+        expect do
+          connection.create_statesman_trigger Article, ArticleTransition, sync_column: 'nonexistent'
+        end.to raise_error
+      end
+    end
   end
 
   context 'when providing an invalid sync_column' do
