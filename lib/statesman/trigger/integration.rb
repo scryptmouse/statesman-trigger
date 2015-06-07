@@ -1,5 +1,6 @@
 module Statesman
   module Trigger
+    # Integration with ActiveRecord.
     module Integration
       extend ActiveSupport::Concern
       include Statesman::Trigger::SharedMethods

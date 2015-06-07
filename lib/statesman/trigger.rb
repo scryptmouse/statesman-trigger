@@ -5,7 +5,9 @@ require "pg"
 require "virtus"
 require "dedent"
 
+# Namespace for [Statesman gem](https://github.com/gocardless/statesman).
 module Statesman
+  # Namespace for this gem.
   module Trigger
     require_relative './trigger/null_object'
     require_relative './trigger/parameters'

@@ -1,5 +1,7 @@
 module Statesman
   module Trigger
+    # Generates `[ CREATE | DROP ] FUNCTION` statements.
+    #
     # @api private
     class UpdateFunctionQuery < AbstractQuery
       up! <<-SQL
