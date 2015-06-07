@@ -9,6 +9,9 @@ require "dedent"
 module Statesman
   # Namespace for this gem.
   module Trigger
+    # Raised when a value can't be introspected
+    class IntrospectionError < NoMethodError; end
+
     require_relative './trigger/null_object'
     require_relative './trigger/parameters'
     require_relative './trigger/abstract_query'

@@ -7,8 +7,6 @@ require 'rspec/its'
 
 require_relative './db/boot'
 
-Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
-
 SimpleCov.start do
   add_filter 'spec/activerecord'
   add_filter 'spec/statesman'
@@ -17,6 +15,8 @@ SimpleCov.start do
 end
 
 require 'statesman/trigger'
+
+Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
   config.filter_gems_from_backtrace 'database_cleaner', 'activesupport'

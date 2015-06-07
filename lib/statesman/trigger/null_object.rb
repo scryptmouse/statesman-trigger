@@ -20,10 +20,10 @@ module Statesman
       end
 
       # @param [Symbol] method
-      # @raise [NoMethodError] with the name of the method that should exist on {#name}.
+      # @raise [Statesman::Trigger::IntrospectionError] with the name of the method that should exist on {#name}.
       # @return [void]
       def method_missing(method, *args, &block)
-        raise NoMethodError, "You must provide :#{name} that responds to :#{method}"
+        raise Statesman::Trigger::IntrospectionError, "You must provide :#{name} that responds to :#{method}"
       end
     end
   end
