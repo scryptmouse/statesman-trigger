@@ -22,9 +22,9 @@ describe Statesman::Trigger::Parameters, params: true do
     context 'and not provided tables' do
       let(:options) { Hash.new }
 
-      explodes! :model_table, NoMethodError
-      explodes! :transition_table, NoMethodError
-      explodes! :foreign_key_column
+      explodes! :model_table, Statesman::Trigger::IntrospectionError
+      explodes! :transition_table, Statesman::Trigger::IntrospectionError
+      explodes! :foreign_key_column, Statesman::Trigger::IntrospectionError
     end
   end
 end

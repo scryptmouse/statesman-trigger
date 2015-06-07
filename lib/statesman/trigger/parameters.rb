@@ -84,7 +84,8 @@ module Statesman
 
       # @return [String]
       def inspect
-        %[Statesman::Trigger(#{for_query.inspect})]
+        %[Statesman::Trigger(#{for_inspect.inspect})]
+      end
 
       # @!attribute [r] quoted_function_name
       # Returns the PG-safe {#function_name}
@@ -123,6 +124,9 @@ module Statesman
                          )
       end
 
+      # @return [Hash]
+      def for_inspect
+        attributes.slice(:state_name, :sync_column, :model_table, :transition_table)
       end
 
       private

@@ -10,7 +10,12 @@ module Statesman
         def create_statesman_trigger(*args)
           params = build_statesman_trigger_params(args)
 
-          say_with_time "create_statesman_trigger(#{params.inspect})" do
+          say_with_time "Creating Statesman trigger" do
+            dump_statesman_params params
+
+            say "create_statesman_trigger_function :#{params.function_name}", true
+            say "create_statesman_trigger :#{params.trigger_name}", true
+
             connection.create_statesman_trigger params
           end
         end
@@ -19,8 +24,22 @@ module Statesman
         def drop_statesman_trigger(*args)
           params = build_statesman_trigger_params(args)
 
-          say_with_time "drop_statesman_trigger(#{params.inspect})" do
+          say_with_time "Dropping Statesman trigger" do
+            dump_statesman_params params
+
+            say "drop_statesman_trigger :#{params.trigger_name}", true
+            say "drop_statesman_trigger_function :#{params.function_name}", true
+
             connection.drop_statesman_trigger params
+          end
+        end
+
+        private
+        # @param [Statesman::Trigger::Parameters] params
+        # @return [void]
+        def dump_statesman_params(params)
+          params.for_inspect.each do |key, value|
+            say "#{key}: #{value.inspect}", true
           end
         end
       end
