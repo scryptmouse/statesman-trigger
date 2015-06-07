@@ -14,13 +14,10 @@ module Statesman
     require_relative './trigger/abstract_query'
     require_relative './trigger/trigger_query'
     require_relative './trigger/update_function_query'
-    require_relative './trigger/shared_methods'
     require_relative './trigger/integration'
-    require_relative './trigger/migrations'
   end
 end
 
 ActiveSupport.on_load :active_record do
-  ActiveRecord::ConnectionAdapters::AbstractAdapter.include Statesman::Trigger::Integration
-  ActiveRecord::Migration::CommandRecorder.include Statesman::Trigger::Migrations
+  Statesman::Trigger::Integration.install!
 end

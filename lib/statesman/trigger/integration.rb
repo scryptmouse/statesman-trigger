@@ -3,39 +3,21 @@ module Statesman
     # Integration with ActiveRecord.
     module Integration
       extend ActiveSupport::Concern
-      include Statesman::Trigger::SharedMethods
 
-      def create_statesman_trigger(*args)
-        statesman_trigger_requires_pg!
+      require_relative './integration/shared_methods'
+      require_relative './integration/adapter_methods'
+      require_relative './integration/command_recorder_methods'
+      require_relative './integration/migration_methods'
 
-        params = Statesman::Trigger::Parameters.new build_statesman_trigger_options(args)
-
-        validation_query = params.build_validation_query
-
-        raise "target column `#{params.sync_column}` not found on `#{params.model_table}`." unless select_value(validation_query)
-
-        params.build_statements(direction: :up).map do |stmt|
-          execute stmt
+      class << self
+        # Used in an `ActiveSupport.on_load :active_record` callback to install the ActiveRecord integrations.
+        #
+        # @return [void]
+        def install!
+          ActiveRecord::ConnectionAdapters::AbstractAdapter.include Statesman::Trigger::Integration::AdapterMethods
+          ActiveRecord::Migration::CommandRecorder.include Statesman::Trigger::Integration::CommandRecorderMethods
+          ActiveRecord::Migration.include Statesman::Trigger::Integration::MigrationMethods
         end
-      end
-
-      def drop_statesman_trigger(*args)
-        statesman_trigger_requires_pg!
-
-        params = Statesman::Trigger::Parameters.new build_statesman_trigger_options(args)
-
-        params.build_statements(direction: :down).map do |stmt|
-          execute stmt
-        end
-      end
-
-      def statesman_trigger_requires_pg!
-        raise 'Requires postgres' unless adapter_name =~ /postg/i
-      end
-
-      # @return [Hash]
-      def build_statesman_trigger_options(args)
-        super.first
       end
     end
   end
